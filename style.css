@@ -495,13 +495,14 @@ body {
 /* Cases */
 .cases-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 24px;
 }
 
 .case {
     padding: 32px;
     background: white;
+    position: relative;
 }
 
 .case-feature {
@@ -526,6 +527,7 @@ body {
     padding: 4px 10px;
     border-radius: 12px;
     font-weight: 600;
+    z-index: 1;
 }
 
 .case h3 {
@@ -817,9 +819,10 @@ body {
 
     .hero-inner,
     .about-grid,
-    .contact-grid {
+    .contact-grid,
+    .cases-grid {
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 24px;
     }
 
     .hero h1 {
@@ -829,5 +832,16 @@ body {
     .hero-panel {
         order: -1;
         margin-bottom: 20px;
+    }
+
+    .case {
+        padding: 24px;
+    }
+
+    .case-badge {
+        top: 15px;
+        right: 15px;
+        font-size: 11px;
+        padding: 3px 8px;
     }
 }
