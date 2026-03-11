@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>合作案例｜家雲數位工作室</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="assets/jy.ico" type="image/x-icon">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-mark"><img src="assets/ju_logo2.png" alt="家雲數位工作室"></div>
+            <div class="logo-text">
+                <div class="logo-name">家雲數位工作室</div>
+                <div class="logo-sub">客製系統開發．流程優化</div>
+            </div>
+        </div>
+        <nav class="nav">
+            <a href="index.html#about" class="nav-link">公司簡介</a>
+            <a href="index.html#services" class="nav-link">服務項目</a>
+            <a href="cases.html" class="nav-link">合作案例</a>
+            <a href="index.html#process" class="nav-link">合作流程</a>
+            <a href="index.html#contact" class="nav-link">聯絡我們</a>
+        </nav>
+        <button class="nav-toggle" aria-label="切換選單">
+            <span></span><span></span><span></span>
+        </button>
+    </header>
+
+    <main>
+        <section id="cases" class="section reveal">
+            <div class="section-header">
+                <h2>合作案例</h2>
+                <p>以下為部分可公開案例，點擊卡片可查看完整內容</p>
+            </div>
+
+            <div class="cases-grid" id="caseStudiesGrid">
+                <p id="loadingMessage">正在載入合作案例...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <span><span id="year"></span> 家雲數位工作室 Jayun Digital Studio</span>
+    </footer>
+
+    <button class="back-to-top" aria-label="回到頂部" id="backToTop">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6" />
+        </svg>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/contentful@10.8.6/dist/contentful.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
