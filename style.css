@@ -1,26 +1,26 @@
-:root {
-    /* 調色盤：更現代的科技藍與深邃灰 */
+﻿:root {
+    /* 隤輯?歹??渡隞??蝘???瘛梢???*/
     --primary: #3b82f6;
     --primary-dark: #2563eb;
     --primary-light: #eff6ff;
     --accent: #0ea5e9;
-    /* 亮藍色點綴 */
+    /* 鈭株??脤?蝬?*/
     --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #0ea5e9 100%);
 
     --bg: #f8fafc;
     --bg-surface: rgba(255, 255, 255, 0.7);
-    /* 玻璃擬態背景 */
+    /* ?餌??祆?? */
     --bg-card: #ffffff;
 
     --text-main: #0f172a;
-    /* 很深的藍黑，比純黑更有質感 */
+    /* 敺楛??暺?瘥?暺?釭??*/
     --text-sub: #475569;
     --text-muted: #94a3b8;
 
     --border: rgba(226, 232, 240, 0.8);
     --border-hover: #cbd5e1;
 
-    /* 陰影系統 */
+    /* ?啣蔣蝟餌絞 */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
@@ -48,7 +48,7 @@ body {
     margin: 0;
     font-family: var(--font-sans);
     background-color: var(--bg);
-    /* 增加背景紋理，更有質感 */
+    /* 憓??蝝?嚗?釭??*/
     background-image:
         radial-gradient(at 0% 0%, hsla(215, 98%, 61%, 0.1) 0px, transparent 50%),
         radial-gradient(at 100% 0%, hsla(256, 100%, 60%, 0.08) 0px, transparent 50%);
@@ -80,7 +80,7 @@ body {
     gap: 10px;
 }
 
-/* 設定logo-mark的寬度為5% */
+/* 閮剖?logo-mark?祝摨衣5% */
 .logo-mark {
     width: 60px;
     height: auto;
@@ -192,7 +192,7 @@ body {
     overflow: hidden;
 }
 
-/* 增加一個裝飾性的光暈 */
+/* 憓?銝??憌暹抒??? */
 .hero-bg-blob {
     position: absolute;
     top: -10%;
@@ -580,26 +580,26 @@ body {
 }
 
 /* ======================================= */
-/* 聯絡我們 (Contact) 區塊優化樣式 - 修正為三欄 */
+/* ?舐窗??(Contact) ?憛?見撘?- 靽格迤?箔?甈?*/
 /* ======================================= */
 
 .contact-grid {
     display: grid;
-    /* 修正為平均的三欄佈局 */
+    /* 靽格迤?箏像??銝?雿? */
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px; /* 縮小間距讓三欄能更好呈現 */
+    gap: 20px; /* 蝮桀???霈?甈?游末? */
 }
 
-/* 確保所有卡片都有相同的內邊距 */
+/* 蝣箔????????折?頝?*/
 .contact-card,
 .prep-card,
 .tip-card {
-    padding: 30px 25px; /* 略微縮小內邊距以適應三欄 */
+    padding: 30px 25px; /* ?亙凝蝮桀??折?頝誑?拇?銝? */
     display: flex;
     flex-direction: column;
 }
 
-/* 聯絡清單 (Contact List) */
+/* ?舐窗皜 (Contact List) */
 .contact-list {
     list-style: none;
     padding: 0;
@@ -609,11 +609,11 @@ body {
 .contact-list li {
     display: flex;
     align-items: center;
-    margin-bottom: 8px; /* 略微縮小行距 */
+    margin-bottom: 8px; /* ?亙凝蝮桀?銵? */
     font-size: 15px;
 }
 .contact-label {
-    width: 70px; /* 略微縮小標籤寬度 */
+    width: 70px; /* ?亙凝蝮桀?璅惜撖砍漲 */
     font-weight: 500;
     color: var(--text-sub);
 }
@@ -623,7 +623,7 @@ body {
     text-decoration: none;
 }
 
-/* 準備清單 (Preparation List) - 在中間卡片內 */
+/* 皞?皜 (Preparation List) - ?其葉?? */
 .prep-note {
     margin-top: 10px;
     padding-bottom: 10px;
@@ -640,7 +640,7 @@ body {
     list-style: none;
     padding-left: 0;
     margin: 0;
-    font-size: 14px; /* 略微縮小字體 */
+    font-size: 14px; /* ?亙凝蝮桀?摮? */
     color: var(--text-main);
     line-height: 1.7;
 }
@@ -653,7 +653,7 @@ body {
 }
 
 .prep-list li::before {
-    content: "💡";
+    content: "•";
     position: absolute;
     left: 0;
     font-size: 12px;
@@ -667,7 +667,7 @@ body {
     margin-top: 15px;
 }
 
-/* 問題範例區塊 (Example Tip Content) - 在右側卡片內 */
+/* ??蝭??憛?(Example Tip Content) - ?典?游? */
 .tip-card p {
     font-size: 14px;
     color: var(--text-sub);
@@ -690,10 +690,10 @@ body {
     font-weight: 500;
 }
 
-/* RWD 調整 */
+/* RWD 隤踵 */
 @media (max-width: 1200px) {
     .contact-grid {
-        /* 中尺寸螢幕 (如大平板或小筆電) 設為兩欄 */
+        /* 銝剖偕撖貉撟?(憒之撟單??蝑) 閮剔?拇? */
         grid-template-columns: 1fr 1fr;
         gap: 24px;
     }
@@ -701,7 +701,7 @@ body {
 
 @media (max-width: 768px) {
     .contact-grid {
-        /* 行動裝置設為一欄 */
+        /* 銵?鋆蔭閮剔銝甈?*/
         grid-template-columns: 1fr;
         gap: 24px;
     }
@@ -717,7 +717,7 @@ body {
     color: var(--text-muted);
 }
 
-/* 回到頂部按鈕 */
+/* ???? */
 .back-to-top {
     position: fixed;
     bottom: 30px;
@@ -755,7 +755,7 @@ body {
     transform: translateY(-1px);
 }
 
-/* 響應式：小螢幕調整按鈕位置 */
+/* ?踵?撘?撠撟矽?湔???蝵?*/
 @media (max-width: 768px) {
     .back-to-top {
         bottom: 20px;
@@ -766,13 +766,13 @@ body {
 }
 
 /* Animations & Responsive */
-.reveal {
+.js .reveal {
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.6s cubic-bezier(0.5, 0, 0, 1);
 }
 
-.reveal.active {
+.js .reveal.active {
     opacity: 1;
     transform: translateY(0);
 }
