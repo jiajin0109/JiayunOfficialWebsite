@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="image" href="assets/jayun_direct.jpg" media="(max-width: 768px)">
+    <link rel="preload" as="image" href="assets/jayun_banner.jpg" media="(min-width: 769px)">
     <link rel="stylesheet" href="style.css" />
     <!-- ico -->
     <link rel="icon" href="assets/jy.ico" type="image/x-icon">
@@ -27,8 +29,8 @@
     <div class="intro-splash" aria-hidden="true">
         <div class="intro-splash-inner">
             <picture>
-                <source media="(max-width: 768px)" srcset="assets/jayun_direct.png" />
-                <img src="assets/jayun_banner.png" alt="Jayun Banner" class="intro-splash-logo" />
+                <source media="(max-width: 768px)" srcset="assets/jayun_direct.jpg" />
+                <img src="assets/jayun_banner.jpg" alt="Jayun Banner" class="intro-splash-logo" fetchpriority="high" decoding="async" />
             </picture>
             <!-- <p class="intro-splash-line-en">Custom Software &amp; System Design</p> -->
             <p class="intro-splash-line-zh">客製化軟體與系統設計</p>
