@@ -497,24 +497,21 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 24px;
+    align-items: stretch;
 }
 
 .case {
     padding: 32px;
     background: white;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 320px;
 }
 
 .case-feature {
-    grid-column: span 1;
     border: 2px solid var(--primary-light);
     background: linear-gradient(to bottom right, white, #f8fafc);
-}
-
-@media (min-width: 1024px) {
-    .case-feature {
-        grid-column: span 2;
-    }
 }
 
 .case-badge {
@@ -541,6 +538,98 @@ body {
     font-weight: 500;
     font-size: 15px;
     margin-bottom: 16px;
+}
+
+.case-summary {
+    color: var(--text-sub);
+    font-size: 15px;
+    margin: 0 0 18px;
+    line-height: 1.7;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: calc(1.7em * 4);
+}
+
+.case-open-btn {
+    margin-top: auto;
+    width: 100%;
+}
+
+.case-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: none;
+}
+
+.case-modal.open {
+    display: block;
+}
+
+.case-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+}
+
+.case-modal-dialog {
+    position: relative;
+    width: min(760px, calc(100vw - 32px));
+    max-height: calc(100vh - 40px);
+    margin: 20px auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+.case-modal-content {
+    padding: 28px;
+    overflow-y: auto;
+    max-height: calc(100vh - 40px);
+}
+
+.case-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #0f172a;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.modal-badge {
+    position: static;
+    display: inline-block;
+    margin-bottom: 14px;
+}
+
+.modal-block {
+    margin-top: 16px;
+}
+
+.modal-block h4 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    color: var(--text-main);
+}
+
+.case-list {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--text-sub);
+}
+
+body.modal-open {
+    overflow: hidden;
 }
 
 /* Process */
@@ -836,6 +925,7 @@ body {
 
     .case {
         padding: 24px;
+        min-height: 280px;
     }
 
     .case-badge {
@@ -843,5 +933,9 @@ body {
         right: 15px;
         font-size: 11px;
         padding: 3px 8px;
+    }
+
+    .case-modal-content {
+        padding: 22px 18px;
     }
 }

@@ -15,6 +15,8 @@ const CONTENTFUL_LOGO = {
 };
 
 const CASES_GRID = document.getElementById('caseStudiesGrid');
+const CASE_STUDIES_DATA = [];
+let caseModalEl = null;
 
 // 頛 Contentful Logo
 async function fetchContentfulLogo() {
@@ -63,13 +65,15 @@ async function fetchCaseStudies() {
         // console.log(`caseStudies: ${JSON.stringify(caseStudies)}`);
 
         CASES_GRID.innerHTML = ''; // 皜征頛閮
+        CASE_STUDIES_DATA.length = 0;
 
         if (caseStudies.length === 0) {
             CASES_GRID.innerHTML = '<p>目前尚無可公開的合作案例，歡迎直接聯絡我們了解更多。</p>';
         } else {
-            caseStudies.forEach(item => {
+            caseStudies.forEach((item, index) => {
                 // 撠?Contentful ???fields ?拐辣?喟策 createCaseCard
-                CASES_GRID.innerHTML += createCaseCard(item.fields);
+                CASE_STUDIES_DATA.push(item.fields);
+                CASES_GRID.innerHTML += createCaseCard(item.fields, index);
             });
             // ?? .tilt ??蝯行?????
             initializeTiltEffects();
@@ -87,41 +91,122 @@ async function fetchCaseStudies() {
  * 撱箇??桐?獢???HTML 蝯?
  * @param {Object} fields - 敺?Contentful ???銝獢?鞈?
  */
-function createCaseCard(fields) {
+function createCaseCard(fields, index) {
     const isFactoryFeature = fields.badge === '工廠管理案例';
     const cardClass = isFactoryFeature ? 'case-feature' : '';
     const badgeHtml = fields.badge ? `<div class="case-badge">${fields.badge}</div>` : '';
-
-    const renderList = (title, items) => {
-        if (!Array.isArray(items) || items.length === 0) return '';
-        const listItems = items.map(item => `<li>${item}</li>`).join('');
-        const titleHtml = title ? `<p><strong>${title}</strong></p>` : '';
-
-        return `
-            ${titleHtml}
-            <ul class="case-list">
-                ${listItems}
-            </ul>
-        `;
-    };
-
-    const featuresTitle = isFactoryFeature ? '系統重點' : '';
-    const featuresListHtml = renderList(featuresTitle, fields.features);
-    const deviceListHtml = renderList('設備串接', fields.deviceIntegration);
-    const benefitsListHtml = renderList('導入效益', fields.benefits);
-    const descriptionHtml = fields.description ? `<p>${fields.description}</p>` : '';
+    const summaryText = getCaseSummary(fields);
 
     return `
-        <article class="case card tilt ${cardClass}">
+        <article class="case card tilt ${cardClass}" data-case-index="${index}">
             ${badgeHtml}
             <h3>${fields.title || '未命名案例'}</h3>
             <p class="case-subtitle">${fields.subtitle || ''}</p>
-            ${descriptionHtml}
-            ${featuresListHtml}
-            ${deviceListHtml}
-            ${benefitsListHtml}
+            <p class="case-summary">${summaryText}</p>
+            <button class="case-open-btn btn outline" type="button" data-case-index="${index}">查看完整內容</button>
         </article>
     `;
+}
+
+function getCaseSummary(fields) {
+    const parts = [];
+    if (fields.description) parts.push(String(fields.description));
+    if (Array.isArray(fields.features)) parts.push(fields.features.slice(0, 2).join('、'));
+    return parts.join(' ').trim() || '點擊查看此案例的完整內容。';
+}
+
+function renderCaseList(title, items) {
+    if (!Array.isArray(items) || items.length === 0) return '';
+    const listItems = items.map(item => `<li>${item}</li>`).join('');
+    return `
+        <div class="modal-block">
+            <h4>${title}</h4>
+            <ul class="case-list">
+                ${listItems}
+            </ul>
+        </div>
+    `;
+}
+
+function createCaseModal() {
+    if (caseModalEl) return;
+    caseModalEl = document.createElement('div');
+    caseModalEl.className = 'case-modal';
+    caseModalEl.setAttribute('aria-hidden', 'true');
+    caseModalEl.innerHTML = `
+        <div class="case-modal-overlay" data-close-modal="true"></div>
+        <div class="case-modal-dialog" role="dialog" aria-modal="true" aria-label="合作案例完整內容">
+            <button class="case-modal-close" type="button" aria-label="關閉視窗" data-close-modal="true">×</button>
+            <div class="case-modal-content" id="caseModalContent"></div>
+        </div>
+    `;
+    document.body.appendChild(caseModalEl);
+
+    caseModalEl.addEventListener('click', (event) => {
+        const target = event.target;
+        if (target && target.getAttribute('data-close-modal') === 'true') {
+            closeCaseModal();
+        }
+    });
+}
+
+function openCaseModal(index) {
+    const caseData = CASE_STUDIES_DATA[index];
+    if (!caseData) return;
+    createCaseModal();
+
+    const modalContent = document.getElementById('caseModalContent');
+    const isFactoryFeature = caseData.badge === '工廠管理案例';
+    const featuresTitle = isFactoryFeature ? '系統重點' : '主要功能';
+    const descriptionHtml = caseData.description ? `<p>${caseData.description}</p>` : '';
+
+    modalContent.innerHTML = `
+        ${caseData.badge ? `<div class="case-badge modal-badge">${caseData.badge}</div>` : ''}
+        <h3>${caseData.title || '未命名案例'}</h3>
+        <p class="case-subtitle">${caseData.subtitle || ''}</p>
+        ${descriptionHtml}
+        ${renderCaseList(featuresTitle, caseData.features)}
+        ${renderCaseList('設備串接', caseData.deviceIntegration)}
+        ${renderCaseList('導入效益', caseData.benefits)}
+    `;
+
+    caseModalEl.classList.add('open');
+    caseModalEl.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+}
+
+function closeCaseModal() {
+    if (!caseModalEl) return;
+    caseModalEl.classList.remove('open');
+    caseModalEl.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+}
+
+function initializeCaseModalEvents() {
+    if (!CASES_GRID) return;
+    CASES_GRID.addEventListener('click', (event) => {
+        const card = event.target.closest('.case[data-case-index]');
+        const button = event.target.closest('.case-open-btn');
+
+        // 優先處理按鈕點擊
+        if (button) {
+            const index = Number(button.getAttribute('data-case-index'));
+            openCaseModal(index);
+            return;
+        }
+
+        // 點整張卡片也可開啟，避免點到互動元素時誤觸
+        if (!card) return;
+        const interactiveTarget = event.target.closest('a, button, input, textarea, select, label');
+        if (interactiveTarget) return;
+
+        const index = Number(card.getAttribute('data-case-index'));
+        openCaseModal(index);
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeCaseModal();
+    });
 }
 
 // ?踵???script.js 鋆∪??祉? Tilt ??蝔?蝣?
@@ -276,6 +361,7 @@ if (backToTopBtn) {
 
 // 蝣箔???DOM 摰頛敺??瑁?嚗??蝝?瘝??
 document.addEventListener('DOMContentLoaded', () => {
+    initializeCaseModalEvents();
     // ?澆銝餃撘???頛獢?
     fetchCaseStudies();
     fetchContentfulLogo();
