@@ -897,6 +897,96 @@ body.modal-open {
     border-top: 1px solid var(--border);
     font-size: 14px;
     color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-link {
+    color: var(--text-sub);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.footer-link:hover {
+    color: var(--primary);
+}
+
+/* 隱私權政策等法律頁 */
+.legal-page {
+    padding-top: 48px;
+    padding-bottom: 80px;
+}
+
+.legal-header h1 {
+    font-size: clamp(28px, 4vw, 36px);
+    font-weight: 800;
+    margin: 0 0 12px;
+    color: var(--text-main);
+}
+
+.legal-updated {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.legal-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 36px 32px 40px;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.legal-content > p,
+.legal-content > ul {
+    font-size: 15px;
+    color: var(--text-sub);
+    line-height: 1.8;
+    margin: 0 0 1.25em;
+}
+
+.legal-content h2 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 2em 0 0.65em;
+}
+
+.legal-content h2:first-of-type {
+    margin-top: 0.5em;
+}
+
+.legal-content ul {
+    padding-left: 1.35em;
+}
+
+.legal-content li {
+    margin-bottom: 0.5em;
+}
+
+.legal-content li:last-child {
+    margin-bottom: 0;
+}
+
+.logo-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo-link:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+}
+
+@media (max-width: 768px) {
+    .legal-content {
+        padding: 28px 20px 32px;
+    }
 }
 
 /* ???? */
