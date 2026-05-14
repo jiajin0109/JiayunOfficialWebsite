@@ -594,8 +594,8 @@ body {
 
 .case-badge {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 8px;
+    right: 16px;
     background: var(--primary);
     color: white;
     font-size: 12px;
@@ -1112,8 +1112,8 @@ body.modal-open {
     }
 
     .case-badge {
-        top: 15px;
-        right: 15px;
+        top: 5px;
+        right: 12px;
         font-size: 11px;
         padding: 3px 8px;
     }
