@@ -1,86 +1,37 @@
 ﻿document.documentElement.classList.add("js");
 
-// Contentful 閮剖?
-const CONTENTFUL_CONFIG = {
-    SPACE_ID: '4uv0twlljzf6',       // ?? 隢???函? Space ID
-    ACCESS_TOKEN: 'bnBUyXqQRoXf3yeP4zvbDRvMZVx6qVBELgEWKF4-LZQ', // ?? 隢???函? Content Delivery API Access Token
-    CONTENT_TYPE_ID: 'jiaYunCaseStudy' // 蝣箔????Contentful 銝剛身摰??批捆璅∪? ID 銝?愕iaYunCaseStudy
-};
-
-// Contentful logo 閮剖?
-const CONTENTFUL_LOGO = {
-    SPACE_ID: '4uv0twlljzf6',
-    ACCESS_TOKEN: 'bnBUyXqQRoXf3yeP4zvbDRvMZVx6qVBELgEWKF4-LZQ',
-    CONTENT_TYPE_ID: 'jiaYunLogo'
-};
-
 const CASES_GRID = document.getElementById('caseStudiesGrid');
 const CASE_STUDIES_DATA = [];
 let caseModalEl = null;
 
-// 頛 Contentful Logo
-async function fetchContentfulLogo() {
-    if (!CONTENTFUL_LOGO || !window.contentful) return;
-    const client = window.contentful.createClient({
-        space: CONTENTFUL_LOGO.SPACE_ID,
-        accessToken: CONTENTFUL_LOGO.ACCESS_TOKEN
-    });
-    const response = await client.getEntries({
-        content_type: CONTENTFUL_LOGO.CONTENT_TYPE_ID
-    });
-    const logo = response.items[0].fields.logo;
-    // 閮剖? logo ??class logo-mark ??
-    const logoMark = document.querySelector('.logo-mark');
-
-    logoMark.innerHTML = `<img src="${logo.fields.file.url}" alt="${logo.fields.title}" class="logo-mark-img">`;
-}
-
-/**
- * 頛銝行葡??Contentful 獢?鞈? (雿輻?祕 API)
- */
 async function fetchCaseStudies() {
     if (!CASES_GRID) return;
-
-    if (!window.contentful) {
-        CASES_GRID.innerHTML = "<p>合作案例載入失敗，請稍後再試或直接聯絡我們索取案例說明。</p>";
-        return;
-    } // 瑼Ｘ SDK ?臬頛
 
     const loadingMessageEl = document.getElementById('loadingMessage');
 
     try {
-        // 2. 撱箇? Contentful 摰Ｘ蝡?
-        const client = window.contentful.createClient({
-            space: CONTENTFUL_CONFIG.SPACE_ID,
-            accessToken: CONTENTFUL_CONFIG.ACCESS_TOKEN
-        });
-
-        // 3. ?澆 Content Delivery API ???批捆
-        const response = await client.getEntries({
-            content_type: CONTENTFUL_CONFIG.CONTENT_TYPE_ID,
-            order: 'sys.createdAt' // 靘?批捆?撱箸???摨?
-        });
-
-        const caseStudies = response.items;
-        // console.log(`caseStudies: ${JSON.stringify(caseStudies)}`);
-
-        CASES_GRID.innerHTML = ''; // 皜征頛閮
-        CASE_STUDIES_DATA.length = 0;
-
-        if (caseStudies.length === 0) {
-            CASES_GRID.innerHTML = '<p>目前尚無可公開的合作案例，歡迎直接聯絡我們了解更多。</p>';
-        } else {
-            caseStudies.forEach((item, index) => {
-                // 撠?Contentful ???fields ?拐辣?喟策 createCaseCard
-                CASE_STUDIES_DATA.push(item.fields);
-                CASES_GRID.innerHTML += createCaseCard(item.fields, index);
-            });
-            // ?? .tilt ??蝯行?????
-            initializeTiltEffects();
+        const response = await fetch('cases.json', { cache: 'no-cache' });
+        if (!response.ok) {
+            throw new Error(`Failed to load cases.json: ${response.status}`);
         }
 
+        const caseStudies = await response.json();
+        CASES_GRID.innerHTML = '';
+        CASE_STUDIES_DATA.length = 0;
+
+        if (!Array.isArray(caseStudies) || caseStudies.length === 0) {
+            CASES_GRID.innerHTML = '<p>目前尚無可公開的合作案例，歡迎直接聯絡我們了解更多。</p>';
+            return;
+        }
+
+        caseStudies.forEach((item, index) => {
+            CASE_STUDIES_DATA.push(item);
+            CASES_GRID.innerHTML += createCaseCard(item, index);
+        });
+
+        initializeTiltEffects();
     } catch (error) {
-        console.error('Contentful 頛?航炊:', error);
+        console.error('案例載入失敗:', error);
         if (loadingMessageEl) {
             loadingMessageEl.textContent = '合作案例載入失敗，請稍後再試或直接聯絡我們。';
         }
@@ -89,7 +40,7 @@ async function fetchCaseStudies() {
 
 /**
  * 撱箇??桐?獢???HTML 蝯?
- * @param {Object} fields - 敺?Contentful ???銝獢?鞈?
+ * @param {Object} fields - Case data fields.
  */
 function createCaseCard(fields, index) {
     const isFactoryFeature = fields.badge === '工廠管理案例';
@@ -214,7 +165,7 @@ function initializeTiltEffects() {
     // ??????.tilt ??嚗??急頛??
     document.querySelectorAll(".tilt").forEach((card) => {
         // ?宏?方???Event Listener 隞亙????? (?舫嚗??港???
-        // ?ㄐ??亥?摰?頝停憟踝?? Contentful 頛敺??踵???CASES_GRID 鋆∠??梯正
+        // Re-applies hover tilt to cards rendered after page load.
 
         card.addEventListener("mousemove", (e) => {
             const rect = card.getBoundingClientRect();
@@ -362,7 +313,5 @@ if (backToTopBtn) {
 // 蝣箔???DOM 摰頛敺??瑁?嚗??蝝?瘝??
 document.addEventListener('DOMContentLoaded', () => {
     initializeCaseModalEvents();
-    // ?澆銝餃撘???頛獢?
     fetchCaseStudies();
-    fetchContentfulLogo();
 });
