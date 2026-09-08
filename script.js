@@ -3,6 +3,9 @@
 const CASES_GRID = document.getElementById('caseStudiesGrid');
 const CASE_STUDIES_DATA = [];
 let caseModalEl = null;
+let caseModalTrigger = null;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const scrollBehavior = () => reducedMotion.matches ? 'auto' : 'smooth';
 
 async function fetchCaseStudies() {
     if (!CASES_GRID) return;
@@ -30,6 +33,10 @@ async function fetchCaseStudies() {
         });
 
         initializeTiltEffects();
+        const requestedCase = new URLSearchParams(window.location.search).get('case');
+        if (requestedCase !== null && /^\d+$/.test(requestedCase)) {
+            openCaseModal(Number(requestedCase));
+        }
     } catch (error) {
         console.error('案例載入失敗:', error);
         if (loadingMessageEl) {
@@ -104,6 +111,7 @@ function createCaseModal() {
 function openCaseModal(index) {
     const caseData = CASE_STUDIES_DATA[index];
     if (!caseData) return;
+    caseModalTrigger = document.activeElement;
     createCaseModal();
 
     const modalContent = document.getElementById('caseModalContent');
@@ -124,6 +132,7 @@ function openCaseModal(index) {
     caseModalEl.classList.add('open');
     caseModalEl.setAttribute('aria-hidden', 'false');
     document.body.classList.add('modal-open');
+    caseModalEl.querySelector('.case-modal-close').focus();
 }
 
 function closeCaseModal() {
@@ -131,6 +140,7 @@ function closeCaseModal() {
     caseModalEl.classList.remove('open');
     caseModalEl.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('modal-open');
+    if (caseModalTrigger instanceof HTMLElement) caseModalTrigger.focus();
 }
 
 function initializeCaseModalEvents() {
@@ -157,11 +167,24 @@ function initializeCaseModalEvents() {
 
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') closeCaseModal();
+        if (event.key === 'Tab' && caseModalEl?.classList.contains('open')) {
+            const controls = [...caseModalEl.querySelectorAll('button, a[href], [tabindex="0"]')];
+            const first = controls[0];
+            const last = controls[controls.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        }
     });
 }
 
 // ?踵???script.js 鋆∪??祉? Tilt ??蝔?蝣?
 function initializeTiltEffects() {
+    if (reducedMotion.matches || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
     // ??????.tilt ??嚗??急頛??
     document.querySelectorAll(".tilt").forEach((card) => {
         // ?宏?方???Event Listener 隞亙????? (?舫嚗??港???
@@ -195,7 +218,7 @@ function smoothScrollTo(targetSelector) {
 
     window.scrollTo({
         top: offsetPosition,
-        behavior: "smooth"
+        behavior: scrollBehavior()
     });
 }
 
@@ -211,6 +234,7 @@ document.querySelectorAll(".nav-link, .btn-scroll").forEach((el) => {
         const nav = document.querySelector(".nav");
         if (nav) {
             nav.classList.remove("open");
+            document.querySelector('.nav-toggle')?.setAttribute('aria-expanded', 'false');
         }
     });
 });
@@ -219,15 +243,28 @@ document.querySelectorAll(".nav-link, .btn-scroll").forEach((el) => {
 const navToggle = document.querySelector(".nav-toggle");
 const nav = document.querySelector(".nav");
 if (navToggle && nav) {
+    nav.id = 'main-nav';
+    nav.setAttribute('aria-label', '主要導覽');
+    navToggle.setAttribute('aria-controls', nav.id);
+    navToggle.setAttribute('aria-expanded', 'false');
     navToggle.addEventListener("click", (e) => {
         e.stopPropagation();
         nav.classList.toggle("open");
+        navToggle.setAttribute('aria-expanded', String(nav.classList.contains('open')));
     });
 
     // 暺?憭???詨
     document.addEventListener("click", (e) => {
         if (!nav.contains(e.target) && !navToggle.contains(e.target)) {
             nav.classList.remove("open");
+            navToggle.setAttribute('aria-expanded', 'false');
+        }
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && nav.classList.contains('open')) {
+            nav.classList.remove('open');
+            navToggle.setAttribute('aria-expanded', 'false');
+            navToggle.focus();
         }
     });
 }
@@ -235,6 +272,7 @@ if (navToggle && nav) {
 // Header 皛曉??啣蔣??
 const header = document.querySelector(".header");
 window.addEventListener("scroll", () => {
+    if (!header) return;
     if (window.scrollY > 10) {
         header.style.boxShadow = "0 4px 20px rgba(0,0,0,0.05)";
         header.style.paddingTop = "8px";
@@ -305,7 +343,7 @@ if (backToTopBtn) {
     backToTopBtn.addEventListener("click", () => {
         window.scrollTo({
             top: 0,
-            behavior: "smooth"
+            behavior: scrollBehavior()
         });
     });
 }

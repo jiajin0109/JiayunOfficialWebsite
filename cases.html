@@ -9,26 +9,27 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="studio.css" />
     <link rel="icon" href="assets/jy.ico" type="image/x-icon">
 </head>
 
 <body>
     <header class="header">
-        <div class="logo">
+        <a class="logo logo-link" href="index.html" aria-label="家雲數位工作室首頁">
             <div class="logo-mark"><img src="assets/ju_logo2.png" alt="家雲數位工作室"></div>
             <div class="logo-text">
                 <div class="logo-name">家雲數位工作室</div>
                 <div class="logo-sub">客製系統開發・流程優化</div>
             </div>
-        </div>
-        <nav class="nav">
+        </a>
+        <nav class="nav" id="main-nav" aria-label="主要導覽">
             <a href="index.html#about" class="nav-link">公司簡介</a>
             <a href="index.html#services" class="nav-link">服務項目</a>
             <a href="cases.html" class="nav-link">合作案例</a>
             <a href="index.html#process" class="nav-link">合作流程</a>
             <a href="index.html#contact" class="nav-link">聯絡我們</a>
         </nav>
-        <button class="nav-toggle" aria-label="切換選單">
+        <button class="nav-toggle" aria-label="切換選單" aria-expanded="false" aria-controls="main-nav">
             <span></span><span></span><span></span>
         </button>
     </header>
@@ -37,7 +38,7 @@
         <section id="cases" class="section reveal">
             <div class="section-header">
                 <h2>合作案例</h2>
-                <p>以下為部分可公開分享的專案，案例內容由本地 JSON 維護。</p>
+                <p>從產線管理到行銷自動化，看看我們如何將實際需求轉化為好用的系統。</p>
             </div>
 
             <div class="cases-grid" id="caseStudiesGrid">
